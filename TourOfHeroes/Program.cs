@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TourOfHeroes.Configurations;
+using TourOfHeroes.Middleware;
 
 var cookiePolicyOptions = new CookiePolicyOptions
 {
@@ -33,6 +34,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<CounterMiddleware>();
 
 app.UseHttpsRedirection();
 //  ᓚᘏᗢ Add setting how we will treat cookies

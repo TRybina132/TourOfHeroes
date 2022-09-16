@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Presentation.Filters;
+using Presentation.ViewModels;
 using Presentation.ViewModels.Hero;
 using Service.ServicesAbstractions;
 
@@ -18,7 +19,6 @@ namespace Presentation.Controllers
     {
         private readonly IHeroService service;
 
-        //  REGISTER SERVICE!!!!
         private readonly IMessageProducer messageProducer;
         private readonly IMapper mapper;
 
@@ -62,6 +62,12 @@ namespace Presentation.Controllers
             var mappedHeroes = mapper.Map<List<Hero>>(heroes);
 
             messageProducer.SendMessage(mappedHeroes);
+        }
+
+        [HttpPut]
+        public async Task UpdateHero(HeroUpdateViewModel hero)
+        {
+            await service.UpdateHero(mapper.Map<Hero>(hero));
         }
     }
 }

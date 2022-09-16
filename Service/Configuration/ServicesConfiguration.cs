@@ -11,6 +11,7 @@ namespace Service.Configuration
             services.AddScoped<IHeroService, HeroService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILogService, LogService>();
         }
     }
 }

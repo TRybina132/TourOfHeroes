@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Presentation.Profiles;
 using Service.Configuration;
+using TourOfHeroes.Middleware;
 
 namespace TourOfHeroes.Configurations
 {
@@ -19,6 +20,8 @@ namespace TourOfHeroes.Configurations
         internal static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<IMessageProducer, HeroMessageProducer>();
+
+            services.AddScoped<ExceptionMiddleware>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAuthorization(options =>
