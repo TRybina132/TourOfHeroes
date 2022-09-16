@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ViewModels;
 using Presentation.ViewModels.User;
 using Service.ServicesAbstractions;
 

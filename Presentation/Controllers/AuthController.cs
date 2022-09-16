@@ -12,6 +12,7 @@ using Presentation.ViewModels.User;
 namespace Presentation.Controllers
 {
     [Route("api/auth")]
+    [Authorize]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -25,6 +26,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<AuthResposeViewModel> Login([FromBody] UserLoginViewModel login)
         {
             AuthResponse response = await authService.Login(login.UserName, login.Password);
@@ -41,7 +43,16 @@ namespace Presentation.Controllers
             return mapper.Map<AuthResposeViewModel>(response);
         }
 
-        [Authorize]
+        [HttpGet("user")]
+        public List<UserClaim> GetCurrentUser()
+        {
+            List<UserClaim> userClaims = User.Claims
+                .Select(x => new UserClaim(x.Type, x.Value))
+                .ToList();
+
+            return userClaims;
+        }
+
         [HttpPost("signOut")]
         public async Task SignOut() =>
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

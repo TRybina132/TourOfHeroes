@@ -30,5 +30,11 @@ namespace Service.Services
 
             return user ?? throw new EntityNotFoundException($"There no user with username: {username}");
         }
+
+        public async Task AddUser(User user)
+        {
+            await userRepository.InsertAsync(user);
+            await userRepository.SaveChangesAsync();
+        }
     }
 }
