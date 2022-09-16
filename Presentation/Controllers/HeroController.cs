@@ -41,7 +41,7 @@ namespace Presentation.Controllers
             foreach (var hero in result)
                  viewModels.Add(mapper.Map<HeroViewModel>(hero));
 
-            messageProducer.SendMessage<List<HeroViewModel>>(viewModels);
+            //messageProducer.SendMessage<List<HeroViewModel>>(viewModels);
 
             return viewModels;
         }

@@ -4,6 +4,7 @@ namespace Service.ServicesAbstractions
 {
     public interface IUserService
     {
-        public Task<User> GetByUsername(string username);
+        Task<User> GetByUsername(string username);
+        Task<List<User>> GetAllUsers();
     }
 }
