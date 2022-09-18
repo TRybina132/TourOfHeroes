@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories.Configuration;
+﻿using DataAccess.Context.Interceptors;
+using DataAccess.Repositories.Configuration;
 using Messaging.Producers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,7 @@ namespace TourOfHeroes.Configurations
         {
             services.AddScoped<IMessageProducer, HeroMessageProducer>();
 
+            services.AddScoped<ConnectionLogInterceptor>();
             services.AddScoped<ExceptionMiddleware>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

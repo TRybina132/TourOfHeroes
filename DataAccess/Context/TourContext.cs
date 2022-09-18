@@ -1,4 +1,5 @@
 ﻿using DataAccess.Configurations;
+using DataAccess.Context.Interceptors;
 using DataAccess.Seeders;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
