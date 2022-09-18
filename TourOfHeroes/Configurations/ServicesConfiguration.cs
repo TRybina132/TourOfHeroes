@@ -1,9 +1,11 @@
 ﻿using DataAccess.Repositories.Configuration;
+using MediatR;
 using Messaging.Producers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Presentation.Profiles;
 using Service.Configuration;
+using Service.ServicesAbstractions;
 using TourOfHeroes.Middleware;
 
 namespace TourOfHeroes.Configurations
@@ -40,6 +42,8 @@ namespace TourOfHeroes.Configurations
             services.AddEndpointsApiExplorer();
             services.AddHttpContextAccessor();
             services.AddSwaggerGen();
+
+            services.AddMediatR(typeof(IHeroService).Assembly);
 
             services.AddAuthentication(options =>
             {

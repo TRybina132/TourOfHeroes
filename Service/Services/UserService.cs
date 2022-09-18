@@ -6,7 +6,7 @@ using Service.ServicesAbstractions;
 
 namespace Service.Services
 {
-    internal class UserService : IUserService
+    internal class UserService : IUserService, IDisposable
     {
         private readonly IUserRepository userRepository;
 
@@ -35,6 +35,11 @@ namespace Service.Services
         {
             await userRepository.InsertAsync(user);
             await userRepository.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            Console.WriteLine("Dispose");
         }
     }
 }

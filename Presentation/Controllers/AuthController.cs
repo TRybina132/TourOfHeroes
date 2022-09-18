@@ -43,6 +43,13 @@ namespace Presentation.Controllers
             return mapper.Map<AuthResposeViewModel>(response);
         }
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<AuthResposeViewModel> RegisterUser(UserCreateViewModel user)
+        {
+            return null;
+        }
+
         [HttpGet("user")]
         public List<UserClaim> GetCurrentUser()
         {
