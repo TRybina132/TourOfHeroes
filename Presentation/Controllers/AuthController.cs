@@ -8,6 +8,9 @@ using Service.ServicesAbstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Presentation.ViewModels.User;
+using MediatR;
+using Messaging.MediatR.Commands;
+using Domain.Entities;
 
 namespace Presentation.Controllers
 {
@@ -18,11 +21,16 @@ namespace Presentation.Controllers
     {
         private readonly IAuthService authService;
         private readonly IMapper mapper;
+        private readonly IMediator mediator;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(
+            IAuthService authService, 
+            IMapper mapper,
+            IMediator mediator)
         {
             this.authService = authService;
             this.mapper = mapper;
+            this.mediator = mediator;
         }
 
         [HttpPost]
@@ -47,7 +55,10 @@ namespace Presentation.Controllers
         [HttpPost("register")]
         public async Task<AuthResposeViewModel> RegisterUser(UserCreateViewModel user)
         {
-            return null;
+            await mediator.Send(new UserRegisterCommand(mapper.Map<User>(user)));
+
+            AuthResponse response = await authService.Login(user.UserName, user.Password);
+            return mapper.Map<AuthResposeViewModel>(response);
         }
 
         [HttpGet("user")]
