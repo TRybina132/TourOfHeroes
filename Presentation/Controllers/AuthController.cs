@@ -58,9 +58,8 @@ namespace Presentation.Controllers
         public async Task<AuthResposeViewModel> RegisterUser(UserCreateViewModel user)
         {
             await userManager.CreateAsync(mapper.Map<User>(user), user.Password);
-            userManager.Dispose();
-
-            AuthResponse response = await authService.Login(user.UserName, user.Password);
+            
+            AuthResponse response = await authService.Login(user.UserName, user.Password, true);
             return mapper.Map<AuthResposeViewModel>(response);
         }
 
