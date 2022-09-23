@@ -1,9 +1,11 @@
 ﻿using DataAccess.Repositories.Configuration;
+using Domain.Entities;
 using MediatR;
 using Messaging.MediatR.Handlers;
 using Messaging.Producers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Presentation.Controllers;
 using Presentation.Profiles;
 using Service.Configuration;

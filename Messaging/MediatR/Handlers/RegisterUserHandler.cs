@@ -15,7 +15,7 @@ namespace Messaging.MediatR.Handlers
 
         public async Task<Unit> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
-            await userService.AddUser(request.User);
+            await userService.AddUser(request.User, request.Password);
             return Unit.Value;
         }
     }

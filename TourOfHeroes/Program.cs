@@ -21,7 +21,7 @@ builder.Services.ConfigureServices();
 builder.Services.AddCors(builder.Configuration.GetSection("CORSConfig"));
 
 builder.Services.AddDbContext<TourContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("LaptopConnection")));
 
 builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<TourContext>();
@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<CounterMiddleware>();
 
 app.UseHttpsRedirection();
