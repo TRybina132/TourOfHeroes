@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -10,19 +11,25 @@ namespace Service.Services
 {
     internal class AuthService : IAuthService
     {
-        private readonly IUserService userService;
+        private readonly IUserRepository userRepository;
         private readonly UserManager<User> userManager;
 
         private async Task<AuthResponse> LoginExcitingUser(string username, string password)
         {
-            User user = await userService.GetByUsername(username);
+            User? user = await userRepository.GetByUsername(username);
+
+            if (user is null)
+                return new AuthResponse
+                {
+                    IsSuccess = false,
+                    Message = $"There no user with username: {username}"
+                };
 
             if (!await userManager.CheckPasswordAsync(user, password))
                 return new AuthResponse { IsSuccess = false, Message = "Passwords don't match" };
 
             //  ᓚᘏᗢ Process similiar to auth with jwt token, but cookies
             //          will be authomaticaly setted to response header
-
             List<Claim> claims = new List<Claim>
             {
                 new Claim("username", user.UserName),
@@ -82,9 +89,9 @@ namespace Service.Services
             };
         }
 
-        public AuthService(IUserService userService, UserManager<User> userManager)
+        public AuthService(IUserRepository userRepository, UserManager<User> userManager)
         {
-            this.userService = userService;
+            this.userRepository = userRepository;
             this.userManager = userManager;
         }
 
