@@ -18,6 +18,7 @@ namespace Presentation.Controllers
     public class HeroController : ControllerBase
     {
         private readonly IHeroService service;
+        private readonly IUserService userService;
 
         private readonly IMessageProducer messageProducer;
         private readonly IMapper mapper;
@@ -25,8 +26,12 @@ namespace Presentation.Controllers
         public HeroController(
             IHeroService service,
             IMapper mapper,
-            IMessageProducer messageProducer)
+            IMessageProducer messageProducer,
+            IServiceProvider serviceProvider)
         {
+            //  ᓚᘏᗢ If we get service that way it won't be tracked by
+            //          child scope in this case, so it won't be disposed
+            this.userService = serviceProvider.GetService(typeof(IUserService)) as IUserService;
             this.service = service;
             this.mapper = mapper;
             this.messageProducer = messageProducer;
