@@ -1,4 +1,5 @@
 ﻿using DataAccess.Context;
+using DataAccess.Context.Interceptors;
 using Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -20,8 +21,11 @@ builder.Services.ConfigureServices();
 
 builder.Services.AddCors(builder.Configuration.GetSection("CORSConfig"));
 
-builder.Services.AddDbContext<TourContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("LaptopConnection")));
+builder.Services.AddDbContext<TourContext>((provider, options) =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(provider.GetRequiredService<ConnectionLogInterceptor>());
+});
 
 builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<TourContext>();
