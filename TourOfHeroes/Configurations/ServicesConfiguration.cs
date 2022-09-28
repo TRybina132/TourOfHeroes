@@ -67,7 +67,6 @@ namespace TourOfHeroes.Configurations
                             context.Response.StatusCode = 401;
                             return Task.CompletedTask;
                         };
-
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                         options.SlidingExpiration = true;
                 });
