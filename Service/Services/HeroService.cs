@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Service.ServicesAbstractions;
 
@@ -31,8 +32,11 @@ namespace Service.Services
             return hero ?? throw new EntityNotFoundException($"There no such hero with id: {heroId}");
         }
 
-        public async Task AddHero(Hero hero)
+        public async Task AddHero(Hero hero, int? userId = null)
         {
+            if (userId != null)
+                hero.UserId = userId;
+
             await heroRepository.InsertAsync(hero);
             await heroRepository.SaveChangesAsync();
         }
