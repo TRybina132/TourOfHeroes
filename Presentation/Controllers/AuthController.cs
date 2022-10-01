@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using AutoMapper;
+using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ViewModels;
-using System.Security.Claims;
-using Services.Responses;
-using Service.ServicesAbstractions;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Presentation.ViewModels.User;
+using Service.ServicesAbstractions;
+using Services.Responses;
 
 namespace Presentation.Controllers
 {
@@ -18,11 +20,19 @@ namespace Presentation.Controllers
     {
         private readonly IAuthService authService;
         private readonly IMapper mapper;
+        private readonly IMediator mediator;
+        private readonly UserManager<User> userManager;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(
+            IAuthService authService, 
+            IMapper mapper,
+            IMediator mediator,
+            UserManager<User> userManager)
         {
             this.authService = authService;
             this.mapper = mapper;
+            this.mediator = mediator;
+            this.userManager = userManager;
         }
 
         [HttpPost]
@@ -47,7 +57,10 @@ namespace Presentation.Controllers
         [HttpPost("register")]
         public async Task<AuthResposeViewModel> RegisterUser(UserCreateViewModel user)
         {
-            return null;
+            await userManager.CreateAsync(mapper.Map<User>(user), user.Password);
+            
+            AuthResponse response = await authService.Login(user.UserName, user.Password, true);
+            return mapper.Map<AuthResposeViewModel>(response);
         }
 
         [HttpGet("user")]

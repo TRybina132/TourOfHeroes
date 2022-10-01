@@ -9,6 +9,7 @@ namespace Presentation.Profiles
         public UserProfile()
         {
             CreateMap<User, UserViewModel>();
+            CreateMap<UserCreateViewModel, User>();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using Messaging.MediatR.Notifications;
+using Messaging.MediatR.Commands;
 using Service.ServicesAbstractions;
 
 namespace Messaging.MediatR.Handlers
 {
-    internal class RegisterUserHandler : INotificationHandler<UserRegisterNotification>
+    public class RegisterUserHandler : IRequestHandler<UserRegisterCommand>
     {
         private readonly IUserService userService;
 
@@ -13,9 +13,7 @@ namespace Messaging.MediatR.Handlers
             this.userService = userService;
         }
 
-        public async Task Handle(UserRegisterNotification notification, CancellationToken cancellationToken)
         {
-            await userService.AddUser(notification.User);
         }
     }
 }

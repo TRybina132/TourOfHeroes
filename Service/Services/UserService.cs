@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Service.ServicesAbstractions;
 
@@ -9,9 +10,13 @@ namespace Service.Services
     internal class UserService : IUserService, IDisposable
     {
         private readonly IUserRepository userRepository;
+        private readonly UserManager<User> userManager;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(
+            IUserRepository userRepository,
+            UserManager<User> userManager)
         {
+            this.userManager = userManager;
             this.userRepository = userRepository;
         }
 
@@ -31,11 +36,8 @@ namespace Service.Services
             return user ?? throw new EntityNotFoundException($"There no user with username: {username}");
         }
 
-        public async Task AddUser(User user)
-        {
-            await userRepository.InsertAsync(user);
-            await userRepository.SaveChangesAsync();
-        }
+        public async Task AddUser(User user, string password) =>
+             await userManager.CreateAsync(user, password);
 
         public void Dispose()
         {

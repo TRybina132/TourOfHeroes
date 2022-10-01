@@ -1,8 +1,13 @@
-﻿using DataAccess.Repositories.Configuration;
+﻿using DataAccess.Context.Interceptors;
+using DataAccess.Repositories.Configuration;
+using Domain.Entities;
 using MediatR;
+using Messaging.MediatR.Handlers;
 using Messaging.Producers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Presentation.Controllers;
 using Presentation.Profiles;
 using Service.Configuration;
 using Service.ServicesAbstractions;
@@ -23,6 +28,7 @@ namespace TourOfHeroes.Configurations
         {
             services.AddScoped<IMessageProducer, HeroMessageProducer>();
 
+            services.AddScoped<ConnectionLogInterceptor>();
             services.AddScoped<ExceptionMiddleware>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -38,7 +44,8 @@ namespace TourOfHeroes.Configurations
             services.AddControllers();
 
             services.AddAutoMapper(typeof(HeroProfile));
-            
+            services.AddMediatR(typeof(RegisterUserHandler));
+
             services.AddEndpointsApiExplorer();
             services.AddHttpContextAccessor();
             services.AddSwaggerGen();
