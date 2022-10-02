@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ApiTests.Factories
 {
@@ -26,7 +27,23 @@ namespace ApiTests.Factories
                     options.UseInMemoryDatabase("InMemoryTourOfHeroes");
                 });
                 
+                ServiceProvider serviceProvider = services.BuildServiceProvider();
 
+                //  ᓚᘏᗢ DB context is scoped so we need this class to provide it
+                using var scope = serviceProvider.CreateScope();
+                using TourContext dbContext = scope.ServiceProvider.GetRequiredService<TourContext>();
+                try
+                {
+                    if (dbContext.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+                        dbContext.Database.Migrate();
+
+                    //  ᓚᘏᗢ Creating database if there no database
+                    dbContext.Database.EnsureCreated();
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception();
+                }
             });
             //base.ConfigureWebHost(builder);
         }
