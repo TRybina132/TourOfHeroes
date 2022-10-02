@@ -41,6 +41,7 @@ namespace Service.Services
                 claims,
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
+            //  ᓚᘏᗢ Parameters for token
             AuthenticationProperties authProperties = new AuthenticationProperties
             {
                 //  ᓚᘏᗢ Refreshing just like tokens
@@ -59,7 +60,7 @@ namespace Service.Services
             };
         }
 
-        private async Task<AuthResponse> LoginNewUser(string username, string password)
+        private AuthResponse LoginNewUser(string username, string password)
         {
             var claims = new List<Claim>
             {
@@ -75,7 +76,7 @@ namespace Service.Services
             {
                 //  ᓚᘏᗢ Refreshing just like tokens
                 AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(6),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
                 //  ᓚᘏᗢ The same cookie will be for multiplie requests
                 IsPersistent = true,
                 IssuedUtc = DateTimeOffset.UtcNow
@@ -99,6 +100,6 @@ namespace Service.Services
             string username,
             string password,
             bool isNewUser = false) =>
-                isNewUser ? await LoginNewUser(username, password) : await LoginExcitingUser(username, password);
+                isNewUser ? LoginNewUser(username, password) : await LoginExcitingUser(username, password);
     }
 }

@@ -9,6 +9,7 @@ using Presentation.Filters;
 using Presentation.ViewModels;
 using Presentation.ViewModels.Hero;
 using Service.ServicesAbstractions;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -57,8 +58,12 @@ namespace Presentation.Controllers
             await service.GetHeroById(id);
 
         [HttpPost]
-        public async Task AddHero([FromBody] HeroCreateViewModel hero) =>
-            await service.AddHero(mapper.Map<Hero>(hero));
+        public async Task AddHero([FromBody] HeroCreateViewModel hero)
+        {
+            Claim? claim = User.FindFirst(claim => claim.Type == "id");
+            int? userId = claim != null ? Convert.ToInt32(claim.Value) : null;
+            await service.AddHero(mapper.Map<Hero>(hero), userId);
+        }
 
         [HttpPost("send")]
         public async Task SendHeroes()

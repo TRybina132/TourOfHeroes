@@ -60,6 +60,15 @@ namespace Presentation.Controllers
             await userManager.CreateAsync(mapper.Map<User>(user), user.Password);
             
             AuthResponse response = await authService.Login(user.UserName, user.Password, true);
+            
+            if (response.IsSuccess)
+            {
+                //  ᓚᘏᗢ Signing in
+                await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                response.Claims,
+                response.Properties);
+            }
             return mapper.Map<AuthResposeViewModel>(response);
         }
 

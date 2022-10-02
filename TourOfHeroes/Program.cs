@@ -23,7 +23,7 @@ builder.Services.AddCors(builder.Configuration.GetSection("CORSConfig"));
 
 builder.Services.AddDbContext<TourContext>((provider, options) =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LaptopConnection"));
     options.AddInterceptors(provider.GetRequiredService<ConnectionLogInterceptor>());
 });
 
