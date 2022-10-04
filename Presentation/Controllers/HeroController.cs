@@ -93,9 +93,15 @@ namespace Presentation.Controllers
         }
 
         [HttpPut]
-        public async Task UpdateHero(HeroUpdateViewModel hero)
+        public async Task UpdateHero([FromBody]HeroUpdateViewModel hero)
         {
             await service.UpdateHero(mapper.Map<Hero>(hero));
+        }
+
+        [HttpDelete("{heroId}")]
+        public async Task DeleteHero([FromRoute] int heroId)
+        {
+            await service.RemoveHero(heroId);
         }
     }
 }

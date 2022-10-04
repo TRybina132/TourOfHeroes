@@ -10,7 +10,6 @@
     //          We can only pass them in invoke method 🦖
     public class CounterMiddleware
     {
-        private static readonly object lockObject = new object();
         private readonly RequestDelegate next;
         private int count = 0;
 
