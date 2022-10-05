@@ -86,7 +86,7 @@ namespace ApiTests.Tests
         [Fact]
         public async Task CreateHero()
         {
-            Hero hero = new Hero
+            HeroCreateViewModel hero = new HeroCreateViewModel
             {
                 Name = "Eva_02"
             };
@@ -105,8 +105,33 @@ namespace ApiTests.Tests
             int id = 400;
           
             HttpResponseMessage response = await client.DeleteAsync($"{route}/{id}");
+            HttpResponseMessage deletedHero = await client.GetAsync($"{route}/{id}");
+
+            Assert.True(deletedHero.StatusCode == HttpStatusCode.NotFound);
+            Assert.True(response.StatusCode == HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task UpdateHero()
+        {
+            HeroUpdateViewModel updatedHero = new HeroUpdateViewModel
+            {
+                Id = 200,
+                Name = "Andromeda_super22"
+            };
+
+            StringContent stringContent = new StringContent(JsonConvert.SerializeObject(updatedHero));
+            stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            HttpResponseMessage response = await client.PutAsync(route, stringContent);
+            HttpResponseMessage heroResponse = await client.GetAsync($"{route}/{updatedHero.Id}");
+
+            string jsonHero = await heroResponse.Content.ReadAsStringAsync();
+            HeroViewModel? heroViewModel = JsonConvert.DeserializeObject<HeroViewModel>(jsonHero);
 
             Assert.True(response.StatusCode == HttpStatusCode.OK);
+            Assert.Equal(updatedHero.Name, heroViewModel?.Name);
+            Assert.Equal(updatedHero.Id, heroViewModel?.Id);
         }
     }
 }

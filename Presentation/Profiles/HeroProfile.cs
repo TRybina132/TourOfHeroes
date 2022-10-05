@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
 using AutoMapper;
 using Presentation.ViewModels.Hero;
-using Presentation.ViewModels;
 
 namespace Presentation.Profiles
 {
