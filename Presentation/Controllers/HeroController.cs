@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Messaging.Producers;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Presentation.Filters;
 using Presentation.ViewModels.Hero;
 using Service.ServicesAbstractions;
