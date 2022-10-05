@@ -1,6 +1,7 @@
 ﻿using ApiTests.Comparers;
 using ApiTests.Deserializers;
 using ApiTests.Factories;
+using ApiTests.Tests.Abstractions;
 using DataAccess.Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -15,34 +16,14 @@ using Xunit;
 
 namespace ApiTests.Tests
 {
-    public class HeroControllerIntergrationTests : IClassFixture<TestWebAppFactory<Program>>
+    public class HeroControllerIntergrationTests : BaseIntergrationTests, IClassFixture<TestWebAppFactory<Program>>
     {
         //  ᓚᘏᗢ We need client to make requests
         private const string route = "/api/hero";
-        private readonly HttpClient client;
         private readonly HeroViewModel exceptedHero = new HeroViewModel { Name = "Andromeda", Id = 200 };
 
-        private void Login()
-        {
-            UserLoginViewModel login = new UserLoginViewModel
-            {
-                UserName = "nancy_2200",
-                Password = "nancy20002"
-            };
-
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(login));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            var response = client.PostAsync("/api/auth",content).Result;
-            response.EnsureSuccessStatusCode();
-        }
-
         //  ᓚᘏᗢ Here we're getting configured client for calls to our api
-        public HeroControllerIntergrationTests(TestWebAppFactory<Program> factory)
-        {
-            client = factory.CreateClient();
-            Login();
-        }
+        public HeroControllerIntergrationTests(TestWebAppFactory<Program> factory) : base(factory) { }
 
         [Fact]
         public async Task GetAllHeroes_WhenHeroesExists()
