@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Messaging.Producers;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Presentation.Filters;
-using Presentation.ViewModels;
 using Presentation.ViewModels.Hero;
 using Service.ServicesAbstractions;
 using System.Security.Claims;
@@ -23,6 +20,12 @@ namespace Presentation.Controllers
 
         private readonly IMessageProducer messageProducer;
         private readonly IMapper mapper;
+
+        private int? GetCurrentUserId()
+        {
+            Claim? claim = User.FindFirst(claim => claim.Type == "id");
+            return claim != null ? Convert.ToInt32(claim.Value) : null;
+        }
 
         public HeroController(
             IHeroService service,
@@ -52,6 +55,19 @@ namespace Presentation.Controllers
             return viewModels;
         }
 
+        [HttpGet("myHeroes")]
+        public async Task<List<HeroViewModel>> GetMyHeroes()
+        {
+            int? userId = GetCurrentUserId();
+            
+            var heroes = await service.GetHeroesForUser(userId);
+            List<HeroViewModel> viewModels = new List<HeroViewModel>();
+            foreach (var hero in heroes)
+                viewModels.Add(mapper.Map<HeroViewModel>(hero));
+
+            return viewModels;
+        }
+
         [HttpGet("{id}")]
         [ExceptionFilterFactory]
         public async Task<Hero> GetHeroById([FromRoute] int id) =>
@@ -60,8 +76,7 @@ namespace Presentation.Controllers
         [HttpPost]
         public async Task AddHero([FromBody] HeroCreateViewModel hero)
         {
-            Claim? claim = User.FindFirst(claim => claim.Type == "id");
-            int? userId = claim != null ? Convert.ToInt32(claim.Value) : null;
+            int? userId = GetCurrentUserId();
             await service.AddHero(mapper.Map<Hero>(hero), userId);
         }
 
@@ -75,9 +90,15 @@ namespace Presentation.Controllers
         }
 
         [HttpPut]
-        public async Task UpdateHero(HeroUpdateViewModel hero)
+        public async Task UpdateHero([FromBody]HeroUpdateViewModel hero)
         {
             await service.UpdateHero(mapper.Map<Hero>(hero));
+        }
+
+        [HttpDelete("{heroId}")]
+        public async Task DeleteHero([FromRoute] int heroId)
+        {
+            await service.RemoveHero(heroId);
         }
     }
 }

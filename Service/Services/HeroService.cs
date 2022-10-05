@@ -23,6 +23,14 @@ namespace Service.Services
                 asNoTracking: true,
                 include: query => query.Include(hero => hero.User));
 
+        public async Task<IList<Hero>> GetHeroesForUser(int? userId) =>
+            userId != null ?
+            await heroRepository.GetAllAsync(
+                asNoTracking: true,
+                include: query => query.Include(hero => hero.User),
+                filter: hero => hero.UserId == userId)
+            : throw new Exception("Can't get current user id!");
+
         public async Task<Hero> GetHeroById(int heroId)
         {
             var hero = await heroRepository.GetById(

@@ -1,4 +1,4 @@
-﻿namespace Presentation.ViewModels
+﻿namespace Presentation.ViewModels.Hero
 {
     public class HeroUpdateViewModel
     {

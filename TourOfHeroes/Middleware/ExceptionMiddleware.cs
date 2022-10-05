@@ -1,4 +1,5 @@
-﻿using Service.ServicesAbstractions;
+﻿using Newtonsoft.Json;
+using Service.ServicesAbstractions;
 
 namespace TourOfHeroes.Middleware
 {
@@ -24,7 +25,9 @@ namespace TourOfHeroes.Middleware
             catch(Exception ex)
             {
                 context.Response.StatusCode = 501;
-                await context.Response.WriteAsync(ex.ToString());
+                context.Response.ContentType = "application/json";
+
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(ex.Message));
                 await logService.LogAsync(ex.ToString());
             }
         }
