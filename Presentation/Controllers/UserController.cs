@@ -23,10 +23,18 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<List<UserViewModel>> GetAllUsers()
         {
             List<User> users = await userService.GetAllUsers();
             return mapper.Map<List<User>, List<UserViewModel>>(users);
+        }
+
+        [HttpDelete("{userId}")]
+        [Authorize(Roles = "reptiloid")]
+        public async Task DeleteUser([FromRoute] int userId)
+        {
+            await userService.GetAllUsers();
         }
     }
 }

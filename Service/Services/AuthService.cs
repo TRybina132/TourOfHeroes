@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Service.ServicesAbstractions;
 using Services.Responses;
 using System.Security.Claims;
+using System.Text;
 
 namespace Service.Services
 {
@@ -13,6 +14,14 @@ namespace Service.Services
     {
         private readonly IUserRepository userRepository;
         private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole<int>> roleManager;
+
+        private async Task AddRoles(User user, List<Claim> claims)
+        {
+            var userRoles = await userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         private async Task<AuthResponse> LoginExcitingUser(string username, string password)
         {
@@ -33,8 +42,10 @@ namespace Service.Services
             List<Claim> claims = new List<Claim>
             {
                 new Claim("username", user.UserName),
-                new Claim("id", user.Id.ToString()),
+                new Claim("id", user.Id.ToString())
             };
+
+            await AddRoles(user, claims);
 
             //  ᓚᘏᗢ Claims identity represents current user and their claims
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
@@ -90,10 +101,14 @@ namespace Service.Services
             };
         }
 
-        public AuthService(IUserRepository userRepository, UserManager<User> userManager)
+        public AuthService(
+            IUserRepository userRepository,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole<int>> roleManager)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<AuthResponse> Login(

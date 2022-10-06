@@ -31,7 +31,8 @@ namespace DataAccess.Seeders
                 ConcurrencyStamp = "lizard"
             };
 
-            modelBuilder.Entity<IdentityRole<int>>().HasData(admin, user, reptiloid);
+            modelBuilder.Entity<IdentityRole<int>>()
+                .HasData(admin, user, reptiloid);
         }
     }
 }
