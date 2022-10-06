@@ -28,7 +28,8 @@ builder.Services.AddDbContext<TourContext>((provider, options) =>
 });
 
 builder.Services.AddIdentity<User, IdentityRole<int>>()
-    .AddEntityFrameworkStores<TourContext>();
+    .AddEntityFrameworkStores<TourContext>()
+    .AddRoles<IdentityRole<int>>();
 
 var app = builder.Build();
 
