@@ -57,8 +57,8 @@ namespace Presentation.Controllers
         [HttpPost("register")]
         public async Task<AuthResposeViewModel> RegisterUser(UserCreateViewModel user)
         {
+            //  ᓚᘏᗢ Everything is working, just password check
             await userManager.CreateAsync(mapper.Map<User>(user), user.Password);
-            
             AuthResponse response = await authService.Login(user.UserName, user.Password, true);
             
             if (response.IsSuccess)
@@ -69,6 +69,7 @@ namespace Presentation.Controllers
                 response.Claims,
                 response.Properties);
             }
+            userManager.Dispose();
             return mapper.Map<AuthResposeViewModel>(response);
         }
 
