@@ -9,6 +9,7 @@ using Service.ServicesAbstractions;
 namespace Presentation.Controllers
 {
     [Route("/api/role")]
+    [Authorize]
     [Authorize(Roles = "admin")]
     [ApiController]
     public class RoleController : ControllerBase
@@ -26,7 +27,6 @@ namespace Presentation.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<List<RoleViewModel>> GetRoles()
         {
             List<IdentityRole<int>> roles = await roleService.GetRoles();
