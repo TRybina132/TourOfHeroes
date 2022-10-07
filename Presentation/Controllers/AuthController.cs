@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ViewModels;
+using Presentation.ViewModels.Role;
 using Presentation.ViewModels.User;
 using Service.ServicesAbstractions;
 using Services.Responses;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Presentation.ViewModels;
+using Presentation.ViewModels.Role;
 using Services.Responses;
 
 namespace Presentation.Profiles

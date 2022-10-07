@@ -1,4 +1,4 @@
-﻿namespace Presentation.ViewModels
+﻿namespace Presentation.ViewModels.Role
 {
     public class AuthResposeViewModel
     {

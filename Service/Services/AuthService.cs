@@ -14,7 +14,6 @@ namespace Service.Services
     {
         private readonly IUserRepository userRepository;
         private readonly UserManager<User> userManager;
-        private readonly RoleManager<IdentityRole<int>> roleManager;
 
         private async Task AddRoles(User user, List<Claim> claims)
         {
@@ -103,12 +102,10 @@ namespace Service.Services
 
         public AuthService(
             IUserRepository userRepository,
-            UserManager<User> userManager,
-            RoleManager<IdentityRole<int>> roleManager)
+            UserManager<User> userManager)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
-            this.roleManager = roleManager;
         }
 
         public async Task<AuthResponse> Login(

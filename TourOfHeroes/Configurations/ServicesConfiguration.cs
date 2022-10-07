@@ -74,6 +74,7 @@ namespace TourOfHeroes.Configurations
             });
         }
 
+
         internal static void AddCors(this IServiceCollection services, IConfigurationSection corsConfig)
         {
             services.AddCors(options =>
