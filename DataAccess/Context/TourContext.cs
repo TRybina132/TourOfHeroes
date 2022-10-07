@@ -19,6 +19,7 @@ namespace DataAccess.Context
             builder.ApplyConfigurationsFromAssembly(typeof(HeroConfiguration).Assembly);
             builder.SeedUsers();
             builder.SeedHeroes();
+            builder.SeedRoles();
         }
 
         public TourContext(DbContextOptions options) : base(options) { }

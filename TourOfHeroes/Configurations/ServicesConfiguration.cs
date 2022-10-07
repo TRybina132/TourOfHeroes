@@ -32,13 +32,7 @@ namespace TourOfHeroes.Configurations
             services.AddScoped<ExceptionMiddleware>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddAuthorization(options =>
-            {
-                //  ᓚᘏᗢ Setting up default schema cause it doesn't want to use cookies as default
-                var defaultAuthBuilder = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme);
-                defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
-                options.DefaultPolicy = defaultAuthBuilder.Build();
-            });
+            
             services.AddCustomServices();
             services.AddRepositories();
             services.AddControllers();
@@ -70,7 +64,16 @@ namespace TourOfHeroes.Configurations
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                         options.SlidingExpiration = true;
                 });
+
+            services.AddAuthorization(options =>
+            {
+                //  ᓚᘏᗢ Setting up default schema cause it doesn't want to use cookies as default
+                var defaultAuthBuilder = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme);
+                defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthBuilder.Build();
+            });
         }
+
 
         internal static void AddCors(this IServiceCollection services, IConfigurationSection corsConfig)
         {
