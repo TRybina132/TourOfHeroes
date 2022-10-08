@@ -9,6 +9,7 @@ namespace DataAccess.Repositories.Configuration
         {
             services.AddScoped<IHeroRepository, HeroRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlanetRepository, PlanetRepository>();
         }
     }
 }

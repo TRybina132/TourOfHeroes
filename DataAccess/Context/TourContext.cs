@@ -11,7 +11,7 @@ namespace DataAccess.Context
     public sealed class TourContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Hero> Heroes { get; set; }
-
+        public DbSet<Planet> Planets { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -13,6 +13,7 @@ namespace Service.Configuration
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPlanetService, PlanetService>();
         }
     }
 }
