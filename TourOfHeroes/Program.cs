@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TourOfHeroes.Configurations;
 using TourOfHeroes.Middleware;
+using TourOfHeroes.Options;
 
 var cookiePolicyOptions = new CookiePolicyOptions
 {
@@ -16,6 +17,9 @@ var cookiePolicyOptions = new CookiePolicyOptions
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.Configure<BlobStorageOptions>(
+    builder.Configuration.GetSection("BlobConfig"));
 
 builder.Services.ConfigureServices();
 
