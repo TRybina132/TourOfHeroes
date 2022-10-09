@@ -1,4 +1,4 @@
-﻿namespace TourOfHeroes.Options
+﻿namespace BlobStorageManager.Options
 {
     public class BlobStorageOptions
     {
