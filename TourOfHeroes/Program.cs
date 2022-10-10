@@ -1,7 +1,7 @@
-﻿using DataAccess.Context;
+﻿using BlobStorageManager.Options;
+using DataAccess.Context;
 using DataAccess.Context.Interceptors;
 using Domain.Entities;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TourOfHeroes.Configurations;
@@ -16,6 +16,10 @@ var cookiePolicyOptions = new CookiePolicyOptions
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+builder.Services.Configure<BlobStorageOptions>
+    (builder.Configuration.GetSection("BlobConfig"));
 
 builder.Services.ConfigureServices();
 

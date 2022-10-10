@@ -1,4 +1,5 @@
-﻿using DataAccess.Context.Interceptors;
+﻿using BlobStorageManager.Configuration;
+using DataAccess.Context.Interceptors;
 using DataAccess.Repositories.Configuration;
 using Domain.Entities;
 using MediatR;
@@ -35,6 +36,7 @@ namespace TourOfHeroes.Configurations
             
             services.AddCustomServices();
             services.AddRepositories();
+            services.AddBlobRepositories();
             services.AddControllers();
 
             services.AddAutoMapper(typeof(HeroProfile));
