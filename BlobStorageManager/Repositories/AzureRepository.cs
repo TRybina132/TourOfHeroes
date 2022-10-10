@@ -88,10 +88,11 @@ namespace BlobStorageManager.Repositories
 
         public async Task<BlobResponse> Upload(IFormFile file)
         {
-            BlobClient blobClient = blobContainerClient.GetBlobClient(file.Name);
+            BlobContainerClient container = new BlobContainerClient(storageOptions.BlobConnectionString, storageOptions.BlobContainerName);
+            BlobClient blobClient = container.GetBlobClient(file.FileName);
 
             await using (Stream? data = file.OpenReadStream())
-                await blobClient.UploadAsync(data);
+                await blobClient.UploadAsync(data, overwrite: true);
 
             BlobResponse response = new BlobResponse
             {

@@ -30,6 +30,11 @@ namespace Presentation.Controllers
                 File(response.Blob?.Content?.Content.ToArray(), response?.Blob?.ContentType)
                 : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
-            
+
+        [HttpPost]
+        public async Task<BlobResponse> UploadFile(IFormFile file)
+        {
+            return await azureRepository.Upload(file);
+        }
     }
 }
