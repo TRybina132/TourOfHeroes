@@ -8,10 +8,11 @@ namespace Service.Services
     internal class PlanetService : IPlanetService
     {
         private readonly IPlanetRepository planetRepository;
-
-        public PlanetService(IPlanetRepository planetRepository)
+        private readonly IUserRepository userRepository;
+        public PlanetService(IPlanetRepository planetRepository, IUserRepository userRepository)
         {
             this.planetRepository = planetRepository;
+            this.userRepository = userRepository;   
         }
 
         public async Task<List<Planet>> GetAllPlanets()
@@ -26,15 +27,19 @@ namespace Service.Services
             return planet ?? throw new EntityNotFoundException("Planet with id: {id} not found");
         }
 
+        public async Task<List<User>> GetUsersForPlanet(int planetId) =>
+            await userRepository.GetUsersForPlanet(planetId);
+
         public async Task AddPlanet(Planet planet)
         {
             await planetRepository.InsertAsync(planet);
             await planetRepository.SaveChangesAsync();
         }
 
-        public Task<Planet> GetPlanetByName(string name)
+        public async Task<Planet> GetPlanetByName(string name)
         {
-            throw new NotImplementedException();
+            Planet? planet = await planetRepository.GetByName(name);
+            return planet ?? throw new EntityNotFoundException($"Planet with name: {name} not found");
         }
     }
 }

@@ -9,11 +9,10 @@ namespace DataAccess.Repositories
     {
         public UserRepository(TourContext tourContext) : base(tourContext) { }
 
-        public async Task<User?> GetByUsername(string username)
-        {
-            var user = await dbSet.FirstOrDefaultAsync(users => users.UserName == username);
+        public async Task<User?> GetByUsername(string username) =>
+            await dbSet.FirstOrDefaultAsync(users => users.UserName == username);
 
-            return user;
-        }
+        public async Task<List<User>> GetUsersForPlanet(int planetId) =>
+            await dbSet.Where(users => users.PlanetId == planetId).ToListAsync();
     }
 }

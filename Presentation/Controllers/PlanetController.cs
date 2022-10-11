@@ -3,6 +3,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ViewModels;
+using Presentation.ViewModels.User;
 using Service.ServicesAbstractions;
 
 namespace Presentation.Controllers
@@ -34,5 +35,21 @@ namespace Presentation.Controllers
         [Authorize(Roles = "admin")]
         public async Task AddPlanet([FromBody] PlanetViewModel planet) =>
             await planetService.AddPlanet(mapper.Map<Planet>(planet));
+
+        [HttpGet("byName/{name}")]
+        [Authorize]
+        public async Task<PlanetViewModel> GetPlanetByName([FromRoute] string name)
+        {
+            Planet planet = await planetService.GetPlanetByName(name);
+            return mapper.Map<PlanetViewModel>(planet);
+        }
+
+        [HttpGet("usersFor/{id}")]
+        [Authorize(Roles = "admin, reptiloid")]
+        public async Task<List<UserViewModel>> GetUsersForPlanet([FromRoute] int id)
+        {
+            List<User> users = await planetService.GetUsersForPlanet(id);
+            return mapper.Map<List<UserViewModel>>(users);
+        }
     }
 }
